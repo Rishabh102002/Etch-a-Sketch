@@ -1,0 +1,78 @@
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;        /*Setting the minimum height taken by the body to be 100% of avalible visible screen.*/
+    font-family:'VT323','Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-color: #D3C18A;
+    color: #44380e;
+    margin: 0px;
+    justify-content: space-between;
+
+}
+
+header{
+    display: flex;
+    background-color: #817045;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    border-bottom: 8px solid #5A4D1D;
+}
+footer{
+    display: flex;
+    background-color: #817045;
+    justify-content: center;
+    border-top: 8px solid #B19B62;
+}
+.container{
+    display: flex;
+    justify-content: center;
+}
+
+.tools{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 500px;
+    width: 200px;
+    margin: 16px;
+    margin-left: 40px;
+}
+.buttonsSet{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex : 1;
+}
+
+.buttonsSet button{
+    display: flex;
+    background-color: #817045;
+    height: 56px;
+    font-family: 'VT323';
+    font-size: 24px;
+    font-weight: 800;
+    color:#2b2306;
+    border-width: 5px;
+    border-color: #af994a;
+    border-left: 5px solid #907d36;
+    box-shadow: 8px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.canvas{
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    height: 500px;
+    width: 500px;
+    margin:16px;
+    margin-right: 40px;
+    background-color: #F5F4DD;
+    border: 8px solid #5A4D1D;
+    border-top: 8px solid #af994a;
+    border-left: 8px solid #907d36;
+    box-shadow: 10px 10px #2b2306;
+}
