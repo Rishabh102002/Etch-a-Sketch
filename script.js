@@ -44,30 +44,38 @@ function switchEraser(){
     const divList =document.querySelectorAll(".pixel")
     divList.forEach( div => {
         div.addEventListener("mouseover", ()=> div.style.backgroundColor = "#F5F4DD");
+        
     });
 }
 
-function draw(brush){
-    if(brush === true){
-        const divList =document.querySelectorAll(".pixel")
+function draw(brush) {
+    if (brush === true) {
+        const divList = document.querySelectorAll(".pixel");
         let mouseDown = false;
-        divList.forEach( div => {
-            div.addEventListener('mousedown', () => {
+        
+        divList.forEach(div => {
+            div.addEventListener('mousedown', (event) => {
                 mouseDown = true;
+                event.preventDefault();
             });
-            div.addEventListener('mouseup', () => {
+
+            div.addEventListener('mouseup', (event) => {
                 mouseDown = false;
+                event.preventDefault();
             });
-            
-            div.addEventListener("mousemove", ()=>{
-                if(mouseDown == true){
-                    div.style.backgroundColor ="black";
+
+            div.addEventListener("mousemove", (event) => {
+                if (mouseDown) {
+                    div.style.backgroundColor = "black";
+                    event.preventDefault();
                 }
             });
         });
-        
     }
 }
+
+
+
 
 const gridSizeBtn = document.querySelector("#gridSize");
 gridSizeBtn.addEventListener("click", () => sendPrompt());
