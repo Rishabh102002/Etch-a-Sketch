@@ -27,6 +27,7 @@ footer{
 .container{
     display: flex;
     justify-content: center;
+    align-items: flex-end;
 }
 
 .tools{
@@ -59,7 +60,15 @@ footer{
     box-shadow: 8px 8px;
     justify-content: center;
     align-items: center;
+    
     gap: 16px;
+}
+
+.canvasContainer{
+    display: flex;
+    flex-direction: column;
+    align-items:flex-end;
+
 }
 
 .canvas{
@@ -68,11 +77,25 @@ footer{
     flex-wrap: wrap;
     height: 500px;
     width: 500px;
-    margin:16px;
-    margin-right: 40px;
+    margin:0px 40px 16px 16px;
     background-color: #F5F4DD;
     border: 8px solid #5A4D1D;
     border-top: 8px solid #af994a;
     border-left: 8px solid #907d36;
+    box-shadow: 10px 10px #2b2306;
+}
+
+.canvasSize{
+    display: flex;
+    height: 40px;
+    width: 80px;
+    background-color: #817045;
+    border: 8px solid #5A4D1D;
+    border-bottom: 0px;
+    margin: 16px 64px 0px;
+    border-top: 8px solid #af994a;
+    border-left: 8px solid #907d36;
+    justify-content: center;
+    align-items: center;
     box-shadow: 10px 10px #2b2306;
 }
