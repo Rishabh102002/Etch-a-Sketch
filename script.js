@@ -137,6 +137,8 @@ function draw() {
                     }
                 }
             });
+
+            div.addEventListener("click", () => div.style.backgroundColor = "black");
         });
     }
 }
@@ -162,13 +164,11 @@ function opacityBrushFunction(){
                 if (mouseDown) {
                     if(brush===false && opacityBrush=== true && eraser===false ){
                         let currentOpacity = parseFloat(div.style.opacity);
-                        console.log(parseFloat(div.style.opacity));
                         if (currentOpacity < 1) {
                             let newOpacity = Math.min(currentOpacity + 0.2, 1); // Increment by 0.2, cap at 1
                             div.style.opacity = newOpacity; // Update the CSS opacity property
                         }
                         event.preventDefault();
-                        console.log("hi")
                     }
                 }
             });
@@ -234,4 +234,3 @@ rainbowBrushBtn.addEventListener("click", () => switchrainbowBrush());
 
 
 createCanvas(canvasSize);
-draw(brush);
