@@ -12,6 +12,7 @@ body{
 }
 
 header{
+    color: #2b2306;
     display: flex;
     background-color: #817045;
     justify-content: center;
@@ -64,6 +65,9 @@ footer{
     
     gap: 16px;
 }
+.buttonsSet button:active {
+    transform: translate(8px, 8px);
+}
 
 .canvasContainer{
     display: flex;
@@ -78,7 +82,7 @@ footer{
     flex-wrap: wrap;
     height: 500px;
     width: 500px;
-    margin:0px 40px 16px 16px;
+    margin:0px 24px 16px 16px;
     background-color: #F5F4DD;
     border: 8px solid #5A4D1D;
     border-top: 8px solid #af994a;
@@ -100,3 +104,39 @@ footer{
     align-items: center;
     box-shadow: 10px 10px #2b2306;
 }
+
+.pallet{
+    display: flex;
+    flex-direction: column;
+    height: 440px;
+    width: 100px;
+    background-color: #817045;
+    border: 8px solid #5A4D1D;
+    border-top: 8px solid #af994a;
+    border-left: 8px solid #907d36;
+    box-shadow: 10px 10px #2b2306;
+    margin: 0px 40px 24px 8px;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 0px 16px;
+}
+
+.colorPicker{
+    height: 40px;
+    width: 40px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.colorBtn{
+    margin: 0px;
+    padding: 0px;
+    border: 6px solid #5A4D1D;
+    border-bottom: 6px solid #af994a;
+    border-right: 6px solid #907d36;
+}
+.colorBtn:active {
+    transform: scale(0.85);
+    border: 6px solid #af994a;
+  }

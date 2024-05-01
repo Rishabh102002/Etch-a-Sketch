@@ -1,9 +1,12 @@
 const canvas = document.querySelector(".canvas")
 const sizeTab = document.querySelector(".canvasSize");
-let canvasSize= 25;
+let canvasSize= 50;
+let selectedColor = "#000000";
+
 let brush = true;
 let opacityBrush = false;
 let eraser = false;
+let rainbowBrush = false;
 
 function createCanvas(canvasSize){
     let sizeOfDiv = 500/canvasSize;
@@ -13,9 +16,9 @@ function createCanvas(canvasSize){
         div.classList.add('pixel');
         div.style.height = sizeOfDiv + "px";
         div.style.width = sizeOfDiv + "px";
-        div.style.backgroundColor= "transparent";
+        div.style.backgroundColor="black";
+        div.style.opacity = 0;
         canvas.appendChild(div);
-        console.log("div created")
         noOfDivs--;
     }
     showCanvasSize(canvasSize)
@@ -26,56 +29,66 @@ function showCanvasSize(canvasSize){
     sizeTab.appendChild(text);
 }
 
+function randomColor(){
+    let hue = Math.floor(Math.random() * 360);
+    let saturation = Math.floor(Math.random() * 50) + 5;
+    let value = Math.floor(Math.random() * 65) +20;
+    return "hsl("+hue.toString()+", "+saturation.toString()+"%,"+value.toString()+"%)";
+}
+
 function sendPrompt(){
-    canvasSize = prompt("Enter the size of canvas you want to set, in integer & <=100");
-    if (Number.isInteger(parseInt(canvasSize)) && canvasSize <= 50){
+    canvasSize = prompt("Enter the size of canvas you want to set, in integer & <=64");
+    if (Number.isInteger(parseInt(canvasSize)) && canvasSize <= 64){
         canvas.innerHTML = "";
         createCanvas(canvasSize);
+        draw();
     }
     else{
-        alert("Please enter the value in integer which is less than or equals to 50 ");
+        alert("Please enter the value in integer which is less than or equals to 64 ");
     }
 }
 
 function clearCanvas(){
     const divList =document.querySelectorAll(".pixel")
     divList.forEach(div => {
-        div.style.backgroundColor = "";
+        div.style.backgroundColor="black";
+        div.style.opacity = 0;
     });
 }
 
 function switchBrush(){
     brush = true;
-    opacityBrush = false;
     eraser = false;
-    draw()
+    opacityBrush = false;
+    rainbowBrush = false;
 }
 
 function switchEraser(){
     brush = false;
-    opacityBrush = false;
     eraser = true;
-    erase();
+    opacityBrush = false;
+    rainbowBrush = false;
 }
 
 function switchOpacityBrush(){
     brush = false;
-    opacityBrush = true;
     eraser = false;
-    opacityBrushFunction();
+    opacityBrush = true;
+    rainbowBrush = false;
 }
 
 function switchrainbowBrush(){
     brush = false;
     eraser = false;
     opacityBrush = false;
-    rainbowBrushFunction();
+    rainbowBrush = true;
 }
 
-function erase(){
-    const divList =document.querySelectorAll(".pixel")
+function draw() {
+    const divList = document.querySelectorAll(".pixel");
     let mouseDown = false;
-    divList.forEach( div => {
+    divList.forEach(div => {
+
         div.addEventListener('mousedown', (event) => {
             mouseDown = true;
             event.preventDefault();
@@ -86,133 +99,74 @@ function erase(){
             event.preventDefault();
         });
 
+        //FOR DRAGGING
         div.addEventListener("mousemove", (event) => {
             if (mouseDown) {
-                if(brush=== false && opacityBrush=== false && eraser === true){
-                    div.style.backgroundColor = "transparent";
-                    event.preventDefault();
+                //for bursh
+                if(brush===true && eraser===false && opacityBrush=== false && rainbowBrush===false ){
+                    div.style.backgroundColor= selectedColor;
+                    div.style.opacity = 1;
                 }
+                //for eraser
+                else if(brush===false && eraser===true && opacityBrush=== false && rainbowBrush===false){
+                    div.style.backgroundColor="black"
+                    div.style.opacity = 0;
+                }
+                //for rainbow brush
+                else if(brush===false && eraser===false && opacityBrush=== false && rainbowBrush===true){
+                    let rn = Math.floor(Math.random() * 3);
+                    div.style.backgroundColor = randomColor();
+                    div.style.opacity = 1;
+                }
+                
+            }
+            event.preventDefault();
+        });
+
+        //FOR CLICKING
+        div.addEventListener("click", (event) => {
+            if(brush===true && eraser===false && opacityBrush=== false && rainbowBrush===false ){
+                div.style.backgroundColor="black"
+                div.style.opacity = 1;
+            }
+            else if(brush===false && eraser===true && opacityBrush=== false && rainbowBrush===false){
+                div.style.backgroundColor="black"
+                div.style.opacity = 0;
+            }
+            else if(brush===false && eraser===false && opacityBrush=== false && rainbowBrush===true){
+                let rn = Math.floor(Math.random() * 3);
+                div.style.backgroundColor = randomColor();
+                div.style.opacity = 1;
+            }
+            event.preventDefault();
+        });
+
+        //FOR OPACITY BRUSH (mousemove rapidly changing opacity while on div, hence used mouse enter)
+        div.addEventListener("mouseenter", (event) => {
+            if (mouseDown) {
+                if(brush===false && eraser===false && opacityBrush=== true && rainbowBrush===false ){
+                    let currentOpacity = parseFloat(div.style.opacity);
+                    if (currentOpacity < 1) {
+                    let newOpacity = Math.min(currentOpacity + 0.12, 1); // Increment by 0.12, cap at 1
+                    div.style.opacity = newOpacity;
+                    }
+                    event.preventDefault();
+                } 
             }
         });
-        
     });
 }
 
-function draw() {
-    if (brush === true && opacityBrush === false) {
-        console.log("brush active")
-        const divList = document.querySelectorAll(".pixel");
-        let mouseDown = false;
-        
-        divList.forEach(div => {
+const colorList = document.querySelectorAll(".colorPicker");
+colorList.forEach(color => {
+    color.addEventListener("click", (event) => {
+        event.preventDefault(); // Prevents the color picker dialog from opening
+        selectedColor = color.value; 
+        console.log("Selected Color:", selectedColor);
+    });
+});
 
-            div.addEventListener("mouseover", (event) =>{
-                div.style.position = "relative";
-                div.style.top = "-5px";
-                div.style.boxShadow = "4px 4px rgba(165, 132, 98, 0.5)";
-                event.preventDefault();
-            });
-            div.addEventListener("mouseleave", (event) =>{
-                div.style.backgroundColor= " "
-                div.style.position = "";
-                div.style.top = "";
-                div.style.boxShadow = "";    
-                event.preventDefault();
-            });
-            div.addEventListener('mousedown', (event) => {
-                mouseDown = true;
-                event.preventDefault();
-            });
-
-            div.addEventListener('mouseup', (event) => {
-                mouseDown = false;
-                event.preventDefault();
-            });
-
-            div.addEventListener("mousemove", (event) => {
-                if (mouseDown) {
-                    if(brush===true && opacityBrush=== false && eraser===false){
-                        div.style.backgroundColor = "black";
-                        event.preventDefault();
-                    }
-                }
-            });
-
-            div.addEventListener("click", () => div.style.backgroundColor = "black");
-        });
-    }
-}
-
-function opacityBrushFunction(){
-    console.log("switched to opacity brush");
-    const divList = document.querySelectorAll(".pixel");
-        let mouseDown = false;
-        
-        divList.forEach(div => {
-            div.style.backgroundColor="black"
-            div.style.opacity = 0;
-            div.addEventListener('mousedown', (event) => {
-                mouseDown = true;
-                event.preventDefault();
-            });
-            div.addEventListener('mouseup', (event) => {
-                mouseDown = false;
-                event.preventDefault();
-            });
-
-            div.addEventListener("mouseenter", (event) => {
-                if (mouseDown) {
-                    if(brush===false && opacityBrush=== true && eraser===false ){
-                        let currentOpacity = parseFloat(div.style.opacity);
-                        if (currentOpacity < 1) {
-                            let newOpacity = Math.min(currentOpacity + 0.2, 1); // Increment by 0.2, cap at 1
-                            div.style.opacity = newOpacity; // Update the CSS opacity property
-                        }
-                        event.preventDefault();
-                    }
-                }
-            });
-            
-        });
-
-}
-
-function rainbowBrushFunction(){
-
-    console.log("switched to rainbow brush");
-    const divList = document.querySelectorAll(".pixel");
-        let mouseDown = false;
-        divList.forEach(div => {
-
-            div.addEventListener('mousedown', (event) => {
-                mouseDown = true;
-                event.preventDefault();
-            });
-            div.addEventListener('mouseup', (event) => {
-                mouseDown = false;
-                event.preventDefault();
-            });
-
-            div.addEventListener("mouseenter", (event) => {
-                if (mouseDown) {
-                    let rn = Math.floor(Math.random() * 3);
-                    div.style.backgroundColor = randomColor();
-                    console.log(randomColor())
-                    console.log("div is ",div.style.backgroundColor);
-                }
-            });
-            
-        });
-
-}
-function randomColor(){
-    let hue = Math.floor(Math.random() * 180);
-    let saturation = Math.floor(Math.random() * 25) + 5;
-    let value = Math.floor(Math.random() * 65) +20;
-    return "hsl("+hue.toString()+", "+saturation.toString()+"%,"+value.toString()+"%)";
-}
-
-//creating buttons
+//Creating buttons
 
 const gridSizeBtn = document.querySelector("#gridSize");
 gridSizeBtn.addEventListener("click", () => sendPrompt());
@@ -234,3 +188,4 @@ rainbowBrushBtn.addEventListener("click", () => switchrainbowBrush());
 
 
 createCanvas(canvasSize);
+draw();
